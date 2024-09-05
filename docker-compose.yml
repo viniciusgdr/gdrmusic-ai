@@ -1,0 +1,40 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass gdrmusic
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - gdrmusic
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gdrmusic
+  web:
+    build: .
+    command: npm run start
+    container_name: gdrmusic
+    restart: always
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "6000:6000"
+
+networks:
+  gdrmusic:
+    driver: bridge
+
+volumes:
+  pgdata:
+  
