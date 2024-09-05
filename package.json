@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "postinstall": "npx prisma generate && mkdir public/musics && touch public/musics/a.txt && git clone https://github.com/viniciusgdr/gdrmusic-backend && cd gdrmusic-backend && npm install && npx prisma generate",
+    "postinstall": "npx prisma generate && mkdir public/musics && touch public/musics/a.txt && npx prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
