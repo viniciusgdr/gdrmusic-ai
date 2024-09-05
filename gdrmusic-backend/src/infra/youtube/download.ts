@@ -1,19 +1,41 @@
 import { type LoadPlayerPairProcessDownloadRepository } from '../../data/protocols/LoadPlayerPairProcessDownloadRepository'
 import fetch from 'node-fetch'
+import axios from 'axios'
 
 export class YoutubeDownloadRepository implements LoadPlayerPairProcessDownloadRepository {
   type = 'YOUTUBE'
 
   async load (load: LoadPlayerPairProcessDownloadRepository.Params): Promise<LoadPlayerPairProcessDownloadRepository.Result> {
     const { id } = load
-    const request = await fetch('https://m.youtube.com/youtubei/v1/player', {
+    const request = await axios.request({
+      url: 'https://m.youtube.com/youtubei/v1/player',
       method: 'POST',
+      maxBodyLength: Infinity,
       headers: {
-        'Content-Type': 'application/json'
+        'content-type': 'application/json'
       },
-      body: JSON.stringify({ videoId: id, context: { client: { clientName: 'ANDROID_CREATOR', clientVersion: '22.36.102' } } })
+      data: JSON.stringify({
+        videoId: id,
+        context: {
+          client: {
+            clientName: 'ANDROID_CREATOR',
+            clientVersion: '22.36.102'
+          }
+        }
+      }),
+      proxy: process.env.PROXY_HOST
+        ? {
+            host: process.env.PROXY_HOST,
+            port: Number(process.env.PROXY_PORT),
+            protocol: process.env.PROXY_PROTOCOL,
+            auth: {
+              password: process.env.PROXY_PASSWORD as string,
+              username: process.env.PROXY_USERNAME as string
+            }
+          }
+        : undefined
     })
-    const response = await request.json()
+    const response = request.data
 
     const statusError = ['ERROR', 'UNPLAYABLE', 'LIVE_STREAM_OFFLINE', 'LOGIN_REQUIRED', 'LIVE_STREAM_OFFLINE']
     if (statusError.includes(response?.playabilityStatus?.status)) {
