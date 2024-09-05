@@ -1,0 +1,32 @@
+{
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "gdrmusic",
+  "short_name": "gdrmusic",
+  "description": "gdrmusic",
+  "icons": [
+    {
+      "src": "/images/gdrmusic.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/gdrmusic.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/gdrmusic.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/gdrmusic.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

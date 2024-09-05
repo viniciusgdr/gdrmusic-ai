@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountMethod {
+  GOOGLE
+  EMAIL
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  payload      String   @unique
+  userAgent    String?  @map("user_agent")
+  ipAddress    String?  @map("ip_address")
+  lastActivity DateTime @map("last_activity")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  name          String
+  password      String
+  imageUrl      String        @default("") @map("image_url")
+  accountMethod AccountMethod @map("account_method")
+  userId        String        @map("user_id")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  playlists     Playlist[]
+  sessions      Session[]
+  genresLiked   Genre[]
+}
+
+enum PlaylistType {
+  PUBLIC
+  PRIVATE
+}
+
+enum CreatedBy {
+  USER
+  SYSTEM
+}
+
+model Playlist {
+  id          String          @id @default(uuid())
+  title       String
+  description String?         @default("")
+  thumbnail   String?         @default("")
+  userId      String          @map("user_id")
+  createdBy   CreatedBy       @default(USER) @map("created_by")
+  type        PlaylistType
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  fixed       Boolean         @default(false)
+  user        User            @relation(fields: [userId], references: [id])
+  musics      PlaylistMusic[]
+}
+
+model PlaylistMusic {
+  id         String   @id @default(uuid())
+  playlistId String   @map("playlist_id")
+  musicId    String   @map("music_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  music      Music    @relation(fields: [musicId], references: [id])
+}
+
+enum Genre {
+  ROCK
+  POP
+  MPB
+  FUNK
+  HIPHOP
+  RAP
+  SERTANEJO
+  PAGODE
+  AXE
+  FORRO
+  SAMBA
+  GOSPEL
+  METAL
+  INDIE
+  ALTERNATIVO
+  BOSSA_NOVA
+  SOUL
+  RHYTHM_AND_BLUES
+  FOLK
+  PUNK
+  GOTICO
+  HARDCORE
+  GRUNGE
+  ELETRONICA
+  CLASSICA
+  JAZZ
+  BLUES
+  REGGAE
+  COUNTRY
+  INFANTIL
+  OUTROS
+}
+
+enum PartnerType {
+  YOUTUBE
+  SOUNDCLOUD
+}
+
+model Music {
+  id               String          @id @default(uuid())
+  partnerType      PartnerType     @map("partner_type")
+  partnerId        String          @map("partner_id")
+  likesOnPartnerId BigInt          @default(0) @map("likes_on_partner_id")
+  title            String
+  artist           String
+  album            String
+  year             Int
+  thumbnail        String
+  genre            Genre
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+  playlists        PlaylistMusic[]
+}
