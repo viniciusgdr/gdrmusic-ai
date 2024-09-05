@@ -1,40 +1,78 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GDRMUSIC - Escute músicas com amigos em tempo real + Busca aprimorada por IA
 
-## Getting Started
+GDRMUSIC é um player de músicas, gerenciador de playlists e utiliza a API da Gemini (Google) para recomendar músicas por IA na [Busca](https://gdrmusic.viniciusgdr.com/search-with-ai)
+<img src="/public/gdrmusic.png" alt="Demo" height="80%" />
 
-First, run the development server:
+
+## Sumário
+
+- [Soluções/Utilidades](#soluçõesutilidades)
+- [Recursos](#recursos)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Instalação](#instalação)
+- [Demonstração](#demonstração)
+- [Configuração](#configuração)
+- [Privacidade](#privacidade)
+
+## Soluções/Utilidades
+
+A maioria das pessoas enfrenta desafios ao baixar músicas, ouvi-las junto com amigos ou organizá-las. Com o GDRMusic, você pode criar e gerenciar suas playlists, descobrir novas músicas com a ajuda da nossa IA e escutar músicas simultaneamente com amigos, usando a mesma fila de reprodução graças à nossa tecnologia inovadora.
+
+## Recursos
+
+- ✅ Buscar músicas.
+- ✅ Criar/Gerenciar Playlists
+- ✅ Escutar músicas ao mesmo tempo com até 100 pessoas conectadas.
+- ✅ Compatibilidade Mobile via PWA
+
+## Tecnologias Utilizadas
+- Gemini
+- Next.js
+- Socket.io (Websocket)
+- Next-Auth.js
+
+## Instalação
+
+Para instalar o gdrmusic e hospedar o seu próprio site, você precisa ter o Node.js e o Docker instalado em sua máquina. Após isso, basta clonar o repositório e instalar as dependências.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ git clone https://github.com/viniciusgdr/gdrmusic-ai
+$ cd gdrmusic-ai
+$ docker compose up -d --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Demonstração
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<div style="display: flex; flex-direction: column; padding-bottom: 4px">
+<img src="/public/gdrmusic-1.png" alt="Demo" height="80%" />
+<img src="/public/gdrmusic-2.png" alt="Demo" height="80%" />
+</div>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Configuração
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Para configurar o gdrmusic, você precisa criar um arquivo `.env` na raiz do projeto e adicionar as seguintes variáveis de ambiente.
 
-## Learn More
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/db_name
 
-To learn more about Next.js, take a look at the following resources:
+REDIS_NAME=
+REDIS_URL=redis://localhost:6379
+REDIS_PASSWORD=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="secret"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+GOOGLE_CLIENT_ID=KEY
+GOOGLE_SECRET_ID=KEY
 
-## Deploy on Vercel
+WS_URL="wss://seuwebsocket.domain.com"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+PATH_MUSICS=/tmp
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+GEMINI_API_KEY=
+```
+
+## Privacidade
+
+O GDRMUSIC respeita a privacidade dos usuários e não armazena nenhuma informação pessoal. Todas as interações são processadas em tempo real e não são armazenadas em nenhum banco de dados. Além disso, o site não compartilha nenhuma informação com terceiros e não exibe anúncios. Todo conteúdo que é efetuado download de terceiros é provido de APIs públicas.
