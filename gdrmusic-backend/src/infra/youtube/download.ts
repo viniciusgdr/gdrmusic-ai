@@ -23,14 +23,15 @@ export class YoutubeDownloadRepository implements LoadPlayerPairProcessDownloadR
           }
         }
       }),
-      proxy: process.env.PROXY_HOST
+      // enable proxy if environment variables are set
+      proxy: process.env.PROXY_HOST && process.env.PROXY_PORT && process.env.PROXY_PROTOCOL && process.env.PROXY_USERNAME && process.env.PROXY_PASSWORD
         ? {
             host: process.env.PROXY_HOST,
             port: Number(process.env.PROXY_PORT),
             protocol: process.env.PROXY_PROTOCOL,
             auth: {
-              password: process.env.PROXY_PASSWORD as string,
-              username: process.env.PROXY_USERNAME as string
+              password: process.env.PROXY_PASSWORD,
+              username: process.env.PROXY_USERNAME
             }
           }
         : undefined
